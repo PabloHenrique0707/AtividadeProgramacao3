@@ -107,7 +107,23 @@
   * **Falta de Cache de Primeiro Nível:** Não rastreia o estado das entidades carregadas em memória (*dirty checking*) para sincronizar modificações automaticamente.
   * **Sem Geração de Schema (DDL) e Sem HQL/JPQL:** Não cria/altera tabelas automaticamente no banco nem possui uma linguagem de consulta abstrata para buscas com filtros avançados ou junções (`JOIN`).
 
-  ---
+ ---
+
+## Questão 14 — Injeção de Dependência Simplificada
+
+* **Container de Injeção e Reflection:** 
+  * O container inspeciona os atributos da classe via Reflection (`getDeclaredFields()`) procurando por aqueles marcados com a anotação `@Inject`.
+  * Utiliza `field.setAccessible(true)` para realizar a atribuição direta do objeto dependente no campo privado.
+* **Resolução de Construtores e Múltiplas Dependências:** 
+  * As instâncias dos serviços são criadas dinamicamente via construtor refletivo (`getDeclaredConstructor().newInstance()`).
+  * O container resolve as instâncias de forma encadeada, garantindo que dependências em múltiplos níveis sejam instanciadas e injetadas corretamente antes de disponibilizar a classe principal.
+* **Tratamento de Erros e Exceções:** 
+  * Caso uma dependência necessária não seja encontrada ou falhe na instanciação, o container lança uma exceção personalizada detalhando a classe e o campo afetado, evitando falhas silenciosas de `NullPointerException`.
+* **Relação com IoC e Injeção de Dependência em Frameworks (ex: Spring):**
+  * **Inversão de Controle (IoC):** Transfere para o container a responsabilidade de gerenciar o ciclo de vida e a criação dos objetos, retirando essa obrigação da classe principal (`new Objeto()`).
+  * **Injeção de Dependência (DI):** A aplicação declara apenas o que precisa via anotação (semelhante ao `@Autowired` no Spring), e o container injeta as instâncias em tempo de execução via Reflection, reduzindo drasticamente o acoplamento entre os componentes.
+
+---
 
 ## Questão 15 — Framework de Comandos Genérico e Refletivo
 
