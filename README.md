@@ -106,3 +106,16 @@
   * **Ausência de Mapeamento de Relacionamentos:** Não possui suporte a mapeamentos complexos como `@OneToMany`, `@ManyToOne` ou estratégias de carregamento *Lazy/Eager*.
   * **Falta de Cache de Primeiro Nível:** Não rastreia o estado das entidades carregadas em memória (*dirty checking*) para sincronizar modificações automaticamente.
   * **Sem Geração de Schema (DDL) e Sem HQL/JPQL:** Não cria/altera tabelas automaticamente no banco nem possui uma linguagem de consulta abstrata para buscas com filtros avançados ou junções (`JOIN`).
+
+  ---
+
+## Questão 15 — Framework de Comandos Genérico e Refletivo
+
+* **Anotação e Descoberta Automática:** A anotação `@Command` marca os métodos executáveis. A classe `CommandRegistry` inspeciona instâncias registradas usando `getDeclaredMethods()`, mapeando comandos e suas metadados automaticamente.
+* **Uso de Generics:**
+  1. No encapsulamento da resposta via classe `CommandResult<R>`, permitindo retornos fortamente tipados.
+  2. No método `execute(...)`, garantindo inferência do tipo retornado sem necessidade de *casts* no cliente.
+* **Validação Rigorosa:** Antes de invocar o método via Reflection, o framework valida tanto a quantidade (`parameters.length == args.length`) quanto o tipo de cada argumento utilizando `isAssignableFrom`.
+* **Decisões de Projeto e Trade-offs:**
+  * **Flexibilidade vs. Desempenho:** A invocação dinâmica via Reflection traz extrema extensibilidade (novos serviços e comandos podem ser adicionados sem alterar a estrutura), porém possui um custo levemente maior de execução em relação a chamadas diretas de métodos.
+  * **Tratamento de Exceções:** Erros de validação e de execução do método são capturados pelo framework e convertidos em instâncias de `CommandResult.fail()`, evitando parada inesperada da aplicação.
