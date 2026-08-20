@@ -1,4 +1,4 @@
-# Alunos: Pablo Henrique Braz, Jefferson Victor e Caique Lucas
+# Alunos: Pablo Henrique Braz, Jefferson Vitor e Caique Lucas
 # Programação III 
 
 # Atividades de Orientação a Objetos em Java
